@@ -1,15 +1,21 @@
 CREATE TABLE IF NOT EXISTS clientes (
+    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+
     nome VARCHAR(255) NOT NULL,
     cpf VARCHAR(255) NOT NULL,
     rg VARCHAR(255) NOT NULL,
     endereco VARCHAR(255) NOT NULL,
     idade INT UNSIGNED NOT NULL,
     data_de_nascimento DATE NOT NULL,
+
+    PRIMARY KEY (id),
     UNIQUE KEY (rg, cpf)
 );
 
 
 CREATE TABLE IF NOT EXISTS funcionarios (
+    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+
     nome VARCHAR(255) NOT NULL,
     cpf VARCHAR(255) NOT NULL,
     rg VARCHAR(255) NOT NULL,
@@ -19,14 +25,20 @@ CREATE TABLE IF NOT EXISTS funcionarios (
     idade INT UNSIGNED NOT NULL,
     data_de_nascimento DATE NOT NULL,
     trabalhando_desde DATE NOT NULL,
+
+    PRIMARY KEY (id),
     UNIQUE KEY (rg, cpf)
 );
 
 CREATE TABLE IF NOT EXISTS carros (
+    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+
     nome VARCHAR(255) NOT NULL,
     modelo VARCHAR(255) NOT NULL,
     valor DECIMAL(6,2) NOT NULL,
     data_de_fabricacao DATE NOT NULL,
+
+    PRIMARY KEY (id),
     UNIQUE KEY (modelo)
 );
 
@@ -45,7 +57,12 @@ CREATE TABLE IF NOT EXISTS vendas (
     cpf_do_cliente VARCHAR(255) NOT NULL,
     rg_do_cliente VARCHAR(255) NOT NULL,
 
-    PRIMARY KEY (id)
+    PRIMARY KEY (id),
+    FOREIGN KEY (nome_do_funcionario) REFERENCES funcionarios (nome),
+    FOREIGN KEY (nome_do_carro) REFERENCES carros (nome),
+    FOREIGN KEY (modelo_do_carro) REFERENCES carros (modelo),
+    FOREIGN KEY (nome_do_cliente, cpf_do_cliente, rg_do_cliente) REFERENCES clientes (nome, cpf, rg)
+
 );
 
 SELECT * FROM clientes
@@ -53,7 +70,7 @@ SELECT * FROM funcionarios
 SELECT * FROM carros
 SELECT * FROM vendas
 
-DROP TABLE vendas
+DROP TABLE `clientes`
 DROP TABLE `funcionarios`
 DELETE FROM vendas WHERE id = 1;
 
