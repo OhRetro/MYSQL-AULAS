@@ -55,7 +55,7 @@ SELECT * FROM vendas
 
 DROP TABLE vendas
 DROP TABLE `funcionarios`
-DELETE FROM vendas WHERE id =1;
+DELETE FROM vendas WHERE id = 1;
 
 INSERT INTO clientes
     (nome, cpf, rg, endereco, idade, data_de_nascimento)
