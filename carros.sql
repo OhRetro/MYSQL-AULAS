@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS carros (
 CREATE TABLE IF NOT EXISTS vendas (
     id INT UNSIGNED NOT NULL AUTO_INCREMENT,
     
-    nome_do_funcionario VARCHAR(255) NOT NULL,
+    id_func INT UNSIGNED NOT NULL,
     
     comissao INT UNSIGNED NOT NULL,
     valor_da_venda DECIMAL(6,2) NOT NULL,
@@ -53,16 +53,11 @@ CREATE TABLE IF NOT EXISTS vendas (
     nome_do_carro VARCHAR(255) NOT NULL,
     modelo_do_carro VARCHAR(255) NOT NULL,
     
-    nome_do_cliente VARCHAR(255) NOT NULL,
-    cpf_do_cliente VARCHAR(255) NOT NULL,
-    rg_do_cliente VARCHAR(255) NOT NULL,
+    id_cliente INT UNSIGNED NOT NULL,
 
     PRIMARY KEY (id),
-    FOREIGN KEY (nome_do_funcionario) REFERENCES funcionarios (nome),
-    FOREIGN KEY (nome_do_carro) REFERENCES carros (nome),
-    FOREIGN KEY (modelo_do_carro) REFERENCES carros (modelo),
-    FOREIGN KEY (nome_do_cliente, cpf_do_cliente, rg_do_cliente) REFERENCES clientes (nome, cpf, rg)
-
+    FOREIGN KEY (id_func) REFERENCES funcionarios (id),
+    FOREIGN KEY (id_cliente) REFERENCES clientes (id)
 );
 
 SELECT * FROM clientes
@@ -98,35 +93,29 @@ VALUES
     ("Honda", "Civic", 1250.00, "2022-04-09")
 
 INSERT INTO `vendas`
-    (nome_do_funcionario, comissao, valor_da_venda, nome_do_carro, modelo_do_carro, nome_do_cliente, cpf_do_cliente, rg_do_cliente)
+    (id_func, comissao, valor_da_venda, nome_do_carro, modelo_do_carro, id_cliente)
 VALUES
     (
-        (SELECT nome FROM `funcionarios` WHERE cargo = "CEO"),
+        (SELECT id FROM `funcionarios` WHERE cargo = "CEO"),
         (SELECT comissao FROM `funcionarios` WHERE cargo = "CEO"), 
         (SELECT valor FROM `carros` WHERE nome = "Ford"),
         "Ford", 
         (SELECT modelo FROM `carros` WHERE nome = "Ford"),
-        (SELECT nome FROM `clientes` WHERE rg = "107812010"),
-        (SELECT cpf FROM `clientes` WHERE rg = "107812010"),
-        "107812010"
+        (SELECT id FROM `clientes` WHERE rg = "107812010")
     ),
     (
-        (SELECT nome FROM `funcionarios` WHERE cargo = "Gerente"),
+        (SELECT id FROM `funcionarios` WHERE cargo = "Gerente"),
         (SELECT comissao FROM `funcionarios` WHERE cargo = "Gerente"), 
         (SELECT valor FROM `carros` WHERE nome = "Toyota"),
         "Toyota", 
         (SELECT modelo FROM `carros` WHERE nome = "Toyota"),
-        (SELECT nome FROM `clientes` WHERE rg = "233140153"),
-        (SELECT cpf FROM `clientes` WHERE rg = "233140153"),
-        "233140153"
+        (SELECT id FROM `clientes` WHERE rg = "233140153")
     ),
     (
-        (SELECT nome FROM `funcionarios` WHERE cargo = "Vendedor"),
+        (SELECT id FROM `funcionarios` WHERE cargo = "Vendedor"),
         (SELECT comissao FROM `funcionarios` WHERE cargo = "Vendedor"), 
         (SELECT valor FROM `carros` WHERE nome = "Honda"),
         "Honda", 
         (SELECT modelo FROM `carros` WHERE nome = "Honda"),
-        (SELECT nome FROM `clientes` WHERE rg = "422019999"),
-        (SELECT cpf FROM `clientes` WHERE rg = "422019999"),
-        "422019999"
+        (SELECT id FROM `clientes` WHERE rg = "422019999")
     )
