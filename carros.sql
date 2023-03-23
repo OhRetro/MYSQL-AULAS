@@ -63,6 +63,10 @@ VALUES
     ("Tatiane Tatiane Vieira", "86868764634", "233140153", "Rua Congo", 20, "2003-01-10"),
     ("Renata Heloise Figueiredo", "56867370616", "422019999", "Rua Valdeci Vasconcelos", 20, "2003-02-02")
 
+INSERT INTO clientes
+    (nome, cpf, rg, endereco, idade, data_de_nascimento)
+VALUES
+    ("Filipe Lucas da Mataa", "352910958491", "1078120101", "Avenida Agrícola Paes de Barros", 20, "2003-01-27")
 
 INSERT INTO `funcionarios`
     (nome, cpf, rg, endereco, comissao, cargo, idade, data_de_nascimento, trabalhando_desde)
@@ -98,6 +102,15 @@ VALUES
         (SELECT id FROM `clientes` WHERE rg = "422019999")
     )
 
+INSERT INTO `vendas`
+    (id_funcionario, id_carro, id_cliente)
+VALUES
+    (
+        (SELECT id FROM `funcionarios` WHERE cargo = "CEO"),
+        (SELECT id FROM `carros` WHERE nome = "Toyota"),
+        (SELECT id FROM `clientes` WHERE rg = "422019999")
+    )
+
 SELECT * FROM clientes
 SELECT * FROM funcionarios
 SELECT * FROM carros
@@ -106,13 +119,13 @@ SELECT * FROM vendas
 DROP TABLE `clientes`
 DROP TABLE `vendas`
 DROP TABLE `funcionarios`
-DELETE FROM vendas WHERE id = 1;
+DELETE FROM vendas WHERE id = 5;
 
 SELECT nome, comissao FROM `funcionarios` WHERE id = (SELECT id_funcionario FROM `vendas` WHERE id = 1)
 SELECT nome, modelo, valor FROM `carros` WHERE id = (SELECT id_carro FROM `vendas` WHERE id = 1)
 SELECT * FROM `clientes` WHERE id = (SELECT id_cliente FROM `vendas` WHERE id = 1)
 
-SELECT f.nome AS nome_funcionario, c.modelo, c.valor, cl.nome AS nome_cliente 
+SELECT f.nome "Funcionario", f.comissao "Comissão", c.nome "Marca", c.modelo "Modelo", c.valor "Preço", cl.nome "Cliente", cl.cpf "CPF", cl.rg "RG"
 FROM vendas v 
 INNER JOIN funcionarios f ON f.id = v.id_funcionario 
 INNER JOIN carros c ON c.id = v.id_carro 
