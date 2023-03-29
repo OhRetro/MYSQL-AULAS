@@ -127,9 +127,21 @@ VALUES
     (1, 2, 1, NULL),
     (2, 3, NULL, 4)
 
-SELECT f.nome "Funcionario", f.comissao "Comissão", c.nome "Marca", c.modelo "Modelo", c.valor "Preço", cl.nome "Cliente", cl.cpf "CPF", cl.rg "RG"
+INSERT INTO vendas
+    (id_cliente, id_funcionario, id_servico, id_produto)
+VALUES
+    (3, 2, 1, 1)
+
+
+SELECT * FROM vendas
+
+SELECT 
+f.nome "Funcionario", f.comissao "Comissão", 
+cl.nome "Cliente", cl.cpf "CPF", cl.rg "RG", cl.nome_cachorro "Cachorro", cl.raca_cachorro "Raça",
+IFNULL(s.nome, "NENHUM") "Serviço", IFNULL(s.valor, 0) "S. Preço",
+IFNULL(p.nome, "NENHUM") "Produto", IFNULL(p.valor, 0) "P. Preço"
 FROM vendas v 
-INNER JOIN funcionarios f ON f.id = v.id_funcionario 
-INNER JOIN carros c ON c.id = v.id_carro 
-INNER JOIN clientes cl ON cl.id = v.id_cliente 
-WHERE v.id = 1;
+INNER JOIN funcionarios f ON f.id = v.id_funcionario  
+INNER JOIN clientes cl ON cl.id = v.id_cliente
+LEFT JOIN servicos s ON s.id = v.id_servico
+LEFT JOIN produtos p ON p.id = v.id_produto 
